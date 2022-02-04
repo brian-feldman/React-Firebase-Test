@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 import Channel from "../channel/Channel";
+import InboxView from "../inbox/InboxView";
 import HomeSidebar from "./ui/HomeSidebar";
 
 export default function Home() {
@@ -20,6 +21,9 @@ export default function Home() {
               </Route>
               <Route path="/channel/:id" exact>
                 <Channel />
+              </Route>
+              <Route path="/inbox" exact>
+                <InboxView />
               </Route>
             </Switch>
           </div>

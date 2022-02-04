@@ -11,7 +11,7 @@ import {
   firebaseTimestamp,
 } from "../../../shared/helpers/firebase.helper";
 
-export default function AddChannelDrawer({ open, onClose, channel }: any) {
+export default function AddChannelDrawer({ open, onClose, workspace }: any) {
   const { handleSubmit, register, errors, reset } = useForm();
   const [loading, setLoading] = useState(false);
   const [user] = useAuthState(firebaseAuth);
@@ -27,9 +27,9 @@ export default function AddChannelDrawer({ open, onClose, channel }: any) {
       await firebaseDB.collection("channels").add({
         name: name,
         owner: user?.uid,
-        channel,
-        createdAt: firebaseTimestamp(),
-        updatedAt: firebaseTimestamp(),
+        workspace,
+        created_at: firebaseTimestamp(),
+        updated_at: firebaseTimestamp(),
       });
       setLoading(false);
       handleClose();

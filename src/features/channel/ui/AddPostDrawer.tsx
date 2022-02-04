@@ -36,8 +36,8 @@ export default function AddPostDrawer({ open, onClose, channel }: any) {
         },
         reply_count: 0,
         channel,
-        createdAt: firebaseTimestamp(),
-        updatedAt: firebaseTimestamp(),
+        created_at: firebaseTimestamp(),
+        updated_at: firebaseTimestamp(),
       });
       setLoading(false);
       handleClose();

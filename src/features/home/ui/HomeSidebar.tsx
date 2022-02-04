@@ -1,42 +1,34 @@
 import { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import SButton from "../../../shared/components/SButton";
-import {
-  firebaseAuth,
-  firebaseDB,
-} from "../../../shared/helpers/firebase.helper";
+import { firebaseAuth } from "../../../shared/helpers/firebase.helper";
+import useHome from "../hooks/useHome";
 import AddChannelDrawer from "./AddChannelDrawer";
 
 export default function HomeSidebar() {
   const [showAdd, setShowAdd] = useState<boolean>(false);
-
-  const [user] = useAuthState(firebaseAuth);
-  const channel = user?.email?.split("@")[1] || "n/a";
-
-  const messagesRef = user && firebaseDB?.collection("channels");
-  const query = messagesRef?.where("channel", "==", channel);
-
-  const [messages] = useCollectionData(query, {
-    idField: "id",
-  });
+  const { userData, messages, workspace } = useHome();
 
   return (
     <SidebarWrapper>
       <div className="logo">
-        <h1>@{channel}</h1>
+        <h1>@{workspace}</h1>
       </div>
+
+      <NavLink className="nav-item" activeClassName="active" exact to="/inbox">
+        <img src="/svg/overview.svg" className="s-ico" alt="" />
+        <div className="title heading">Inbox -- {userData?.unseen_posts}</div>
+      </NavLink>
 
       <NavLink className="nav-item" activeClassName="active" exact to="/">
         <img src="/svg/overview.svg" className="s-ico" alt="" />
         <div className="title heading">Channels</div>
       </NavLink>
 
-      {messages?.map((el: any) => (
+      {messages?.map((el: any, index) => (
         <NavLink
-          key={el.id}
+          key={el?.id}
           className="nav-item"
           activeClassName="active"
           exact
@@ -50,7 +42,7 @@ export default function HomeSidebar() {
       <AddChannelDrawer
         open={showAdd}
         onClose={() => setShowAdd(false)}
-        channel={channel}
+        workspace={workspace}
       />
 
       <div className="btn-wrapper">

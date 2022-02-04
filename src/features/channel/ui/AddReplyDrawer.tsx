@@ -10,7 +10,6 @@ import {
   firebaseDB,
   firebaseTimestamp,
 } from "../../../shared/helpers/firebase.helper";
-import firebase from "firebase/app";
 
 export default function AddReplyDrawer({ open, onClose, post }: any) {
   const { handleSubmit, register, errors, reset } = useForm();
@@ -39,14 +38,9 @@ export default function AddReplyDrawer({ open, onClose, post }: any) {
             display_image: user?.photoURL,
             email: user?.email,
           },
-          createdAt: firebaseTimestamp(),
-          updatedAt: firebaseTimestamp(),
+          created_at: firebaseTimestamp(),
+          updated_at: firebaseTimestamp(),
         });
-
-      await firebaseDB
-        .doc("posts/" + post)
-        .update({ reply_count: firebase.firestore.FieldValue.increment(1) });
-
       setLoading(false);
       handleClose();
     } catch (e) {
