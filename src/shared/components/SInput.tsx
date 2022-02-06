@@ -9,7 +9,11 @@ export default function SInput(props: any) {
         {labelRight && labelRight}
       </section>
       <section className={`input-wrapper ${!!error ? "error" : ""}`}>
-        <input ref={inputRef} {...rest} type={type ?? "test"} />
+        {type === "textarea" ? (
+          <textarea ref={inputRef} {...rest}></textarea>
+        ) : (
+          <input ref={inputRef} {...rest} type={type ?? "test"} />
+        )}
       </section>
       {error && <div className="error">{error}</div>}
     </SInputWrapper>
@@ -63,6 +67,16 @@ const SInputWrapper = styled.div`
       padding: 10px 15px;
       font-size: 14px;
       min-height: 42px;
+    }
+    textarea {
+      width: 100%;
+      background: #fcfdfe;
+      border: 1px solid #f0f1f7;
+      box-sizing: border-box;
+      border-radius: 6px;
+      padding: 10px 15px;
+      font-size: 14px;
+      min-height: 72px;
     }
   }
 `;

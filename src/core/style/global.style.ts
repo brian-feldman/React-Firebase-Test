@@ -63,14 +63,17 @@ export const GlobalStyle = createGlobalStyle`
     &.red{
       color: var(--c-red);
     }
-	&.yellow{
-      color: var(--c-yellow);
+    &.yellow{
+        color: var(--c-yellow);
+      }
+    &.blue{
+        color: var(--c-blue);
     }
-	&.blue{
-      color: var(--c-blue);
-	}
     &.green{
       color: var(---c-green);
+    }
+    &.bold{
+      font-weight: 700;
     }
   }
 

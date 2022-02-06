@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import KPostItem from "../../shared/components/KPostItem";
 import SButton from "../../shared/components/SButton";
-import { firebaseAuth, firebaseDB } from "../../shared/helpers/firebase.helper";
+import { firebaseDB } from "../../shared/helpers/firebase.helper";
 import AddPostDrawer from "./ui/AddPostDrawer";
 import AddReplyDrawer from "./ui/AddReplyDrawer";
 
@@ -14,13 +13,12 @@ export default function Channel() {
   const [showAdd, setShowAdd] = useState<boolean>(false);
   const [showAddReply, setShowAddReply] = useState<null | string>(null);
 
-  const [user] = useAuthState(firebaseAuth);
-  const messagesRef = user && firebaseDB?.collection("posts");
-  const query = messagesRef?.where("channel", "==", params.id);
-
-  const [messages] = useCollectionData(query, {
-    idField: "id",
-  });
+  const [messages] = useCollectionData(
+    firebaseDB?.collection("posts").where("channel", "==", params.id),
+    {
+      idField: "id",
+    }
+  );
 
   return (
     <ChannelWrapper>

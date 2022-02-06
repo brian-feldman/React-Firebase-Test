@@ -18,6 +18,8 @@ const KPostItem = (props: any) => {
     idField: "id",
   });
 
+  const mentioned = user ? props?.mentioned_users?.includes(user.uid) : false;
+
   const handleMarkAsDone = async () => {
     setMarkLoading(true);
     try {
@@ -33,29 +35,39 @@ const KPostItem = (props: any) => {
     setMarkLoading(false);
   };
 
+  const renderBody = (body: string) => {
+    let newContent = body;
+    newContent = newContent
+      .split("@@@__")
+      .join('<span class="text-mention" data-id="');
+    newContent = newContent.split("^^^__").join(`">@`);
+    newContent = newContent.split("@@@^^^").join("</span>");
+    return <div dangerouslySetInnerHTML={{ __html: newContent }}></div>;
+  };
+
   return (
     <KPostItemWrapper className="card">
       <div className="post-header">
+        {mentioned && <div className="mentioned">Response Requested</div>}
         <aside>
           <img src={props?.owner_details?.display_image} alt="" />
         </aside>
         <aside>
           <div className="title">{props?.subject}</div>
-          <div className="body">{props?.body}</div>
+          <div className="body">{renderBody(props?.body)}</div>
 
-          <div onClick={() => setShowReply(true)} className="replies">
+          <div onClick={() => setShowReply((pV) => !pV)} className="replies">
             <span>{props?.reply_count || 0}</span>
             <span> Replies</span>
           </div>
-          {!props?.inbox ? (
-            <div
-              onClick={props.onAddReply}
-              className="replies"
-              style={{ marginLeft: 10 }}
-            >
-              <span>+ Add Reply</span>
-            </div>
-          ) : (
+          <div
+            onClick={props.onAddReply}
+            className="replies"
+            style={{ marginLeft: 10 }}
+          >
+            <span>+ Add Reply</span>
+          </div>
+          {props?.inbox && (
             <div
               onClick={handleMarkAsDone}
               className="replies"
@@ -109,6 +121,11 @@ const KPostItemWrapper = styled.div`
   border-radius: 8px;
   margin-top: 20px;
 
+  .text-mention {
+    padding: 4px 2px;
+    color: var(--c-blue);
+  }
+
   .replies-content {
     .title {
       margin-top: 20px;
@@ -140,6 +157,18 @@ const KPostItemWrapper = styled.div`
 
   .post-header {
     display: flex;
+    position: relative;
+
+    .mentioned {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: var(--c-blue);
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #ffffff;
+    }
   }
 
   img {

@@ -1,15 +1,28 @@
+import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import styled from "styled-components";
 import KPostItem from "../../shared/components/KPostItem";
 import { firebaseAuth, firebaseDB } from "../../shared/helpers/firebase.helper";
+import AddReplyDrawer from "../channel/ui/AddReplyDrawer";
 
 export default function InboxView() {
+  const [showAddReply, setShowAddReply] = useState<null | string>(null);
   const [user] = useAuthState(firebaseAuth);
-  const messagesRef =
-    user && firebaseDB?.collection(`users/${user.uid}/unseen_posts`);
-  const [messages] = useCollectionData(messagesRef, {
-    idField: "id",
+  const [messages] = useCollectionData(
+    firebaseDB
+      ?.collection(`users/${user?.uid}/unseen_posts`)
+      .orderBy("created_at", "asc"),
+    {
+      idField: "id",
+    }
+  );
+
+  const priorityMsg = messages?.filter((el) => {
+    return el?.mentioned_users?.includes(user?.uid);
+  });
+  const restMsg = messages?.filter((el) => {
+    return !el?.mentioned_users?.includes(user?.uid);
   });
 
   return (
@@ -22,10 +35,29 @@ export default function InboxView() {
         {!messages?.length && (
           <div className="text error red">Your inbox is empty</div>
         )}
-        {messages?.map((el) => (
-          <KPostItem onAddReply={() => {}} key={el?.id} inbox {...el} />
+        {priorityMsg?.map((el) => (
+          <KPostItem
+            onAddReply={() => setShowAddReply(el?.id)}
+            key={el?.id}
+            inbox
+            {...el}
+          />
+        ))}
+        {restMsg?.map((el) => (
+          <KPostItem
+            onAddReply={() => setShowAddReply(el?.id)}
+            key={el?.id}
+            inbox
+            {...el}
+          />
         ))}
       </section>
+
+      <AddReplyDrawer
+        open={!!showAddReply}
+        onClose={() => setShowAddReply(null)}
+        post={showAddReply}
+      />
     </ChannelWrapper>
   );
 }

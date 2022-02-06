@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import SButton from "../../../shared/components/SButton";
 import SInput from "../../../shared/components/SInput";
+import SModal from "../../../shared/components/SModal";
 import {
   firebaseAuth,
   firebaseDB,
@@ -50,7 +51,7 @@ export default function AddReplyDrawer({ open, onClose, post }: any) {
   };
 
   return (
-    <Drawer open={open} anchor="right" onClose={handleClose}>
+    <SModal open={open} anchor="right" onClose={handleClose}>
       <AddPostDrawerWrapper>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h1 className="title">Add Reply</h1>
@@ -70,13 +71,15 @@ export default function AddReplyDrawer({ open, onClose, post }: any) {
           </div>
         </form>
       </AddPostDrawerWrapper>
-    </Drawer>
+    </SModal>
   );
 }
 
 const AddPostDrawerWrapper = styled.div`
   width: 400px;
   padding: 20px;
+  background: #fff;
+  border-radius: 6px;
 
   .title {
     font-size: var(--f-base);
