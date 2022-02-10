@@ -3,6 +3,7 @@ import { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
   *{
     box-sizing: border-box;
+    outline: none;
   }
   :root{
     --black: #000;
