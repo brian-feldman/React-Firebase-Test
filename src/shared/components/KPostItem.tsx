@@ -9,14 +9,16 @@ const KPostItem = (props: any) => {
   const [markLoading, setMarkLoading] = useState<boolean>(false);
 
   const [user] = useAuthState(firebaseAuth);
-  const messagesRef =
-    user &&
-    firebaseDB?.collection("posts").doc(props?.id).collection("replies");
-  const query = messagesRef?.orderBy("created_at", "desc");
-
-  const [messages] = useCollectionData(query, {
-    idField: "id",
-  });
+  const [messages] = useCollectionData(
+    firebaseDB
+      ?.collection("posts")
+      ?.doc(props?.id)
+      ?.collection("replies")
+      ?.orderBy("created_at", "desc"),
+    {
+      idField: "id",
+    }
+  );
 
   const mentioned = user ? props?.mentioned_users?.includes(user.uid) : false;
 

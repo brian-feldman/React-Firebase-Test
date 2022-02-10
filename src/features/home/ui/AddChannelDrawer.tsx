@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import SButton from "../../../shared/components/SButton";
 import SInput from "../../../shared/components/SInput";
+import SModal from "../../../shared/components/SModal";
 import {
   firebaseAuth,
   firebaseDB,
@@ -40,7 +41,7 @@ export default function AddChannelDrawer({ open, onClose, workspace }: any) {
   };
 
   return (
-    <Drawer open={open} anchor="right" onClose={handleClose}>
+    <SModal open={open} anchor="right" onClose={handleClose}>
       <AddChannelDrawerWrapper>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h1 className="title">Add New Channel</h1>
@@ -60,13 +61,15 @@ export default function AddChannelDrawer({ open, onClose, workspace }: any) {
           </div>
         </form>
       </AddChannelDrawerWrapper>
-    </Drawer>
+    </SModal>
   );
 }
 
 const AddChannelDrawerWrapper = styled.div`
   width: 400px;
   padding: 20px;
+  background: #fff;
+  border-radius: 12px;
 
   .title {
     font-size: var(--f-base);

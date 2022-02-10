@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { RootState } from "../../../redux";
 import SButton from "../../../shared/components/SButton";
 import { firebaseAuth } from "../../../shared/helpers/firebase.helper";
+import useConfig from "../../../shared/hooks/useConfig";
 import useHome from "../hooks/useHome";
 import AddChannelDrawer from "./AddChannelDrawer";
 
 export default function HomeSidebar() {
-  const [showAdd, setShowAdd] = useState<boolean>(false);
   const { userData, messages, workspace } = useHome();
+  const { handleAddChannelModal, open_add_channel_model } = useConfig();
 
   return (
     <SidebarWrapper>
@@ -40,13 +42,15 @@ export default function HomeSidebar() {
       ))}
 
       <AddChannelDrawer
-        open={showAdd}
-        onClose={() => setShowAdd(false)}
+        open={open_add_channel_model}
+        onClose={() => handleAddChannelModal(false)}
         workspace={workspace}
       />
 
       <div className="btn-wrapper">
-        <SButton onClick={() => setShowAdd(true)}>Add Channel</SButton>
+        <SButton onClick={() => handleAddChannelModal(true)}>
+          Add Channel
+        </SButton>
       </div>
 
       <div className="btn-wrapper">
