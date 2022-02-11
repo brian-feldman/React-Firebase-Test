@@ -10,7 +10,7 @@ import {
   KBarProvider,
 } from "kbar";
 import React from "react";
-import { Home, Inbox, Plus } from "react-feather";
+import { Inbox, Plus, Settings } from "react-feather";
 import { history } from "../helpers/route.helper";
 import useConfig from "../hooks/useConfig";
 
@@ -171,16 +171,6 @@ export default function KCommandBar({ children }: any) {
 
   const kCommandBarActions = [
     {
-      id: "gotoHome",
-      name: "Home",
-      shortcut: ["h"],
-      keywords: "home",
-      section: "Navigation",
-      perform: () => history.push("/"),
-      icon: <Home />,
-      subtitle: "Goto Home",
-    },
-    {
       id: "gotoInbox",
       name: "Inbox",
       shortcut: ["i"],
@@ -189,6 +179,16 @@ export default function KCommandBar({ children }: any) {
       icon: <Inbox />,
       subtitle: "Goto Inbox",
       perform: () => history.push("/inbox"),
+    },
+    {
+      id: "gotoPref",
+      name: "Preferences",
+      shortcut: ["p"],
+      keywords: "pref",
+      section: "Navigation",
+      perform: () => history.push("/preferences"),
+      icon: <Settings />,
+      subtitle: "Goto Preferences",
     },
     {
       id: "addChannel",

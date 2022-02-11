@@ -4,13 +4,15 @@ import { useDocument } from "react-firebase-hooks/firestore";
 import styled from "styled-components";
 import KYesNoModal from "../../shared/components/KYesNoModal";
 import { firebaseAuth, firebaseDB } from "../../shared/helpers/firebase.helper";
+import useConfig from "../../shared/hooks/useConfig";
 
 export default function SettingView() {
-  const [showYesNo, setShowYesNo] = useState<boolean>(false);
-
   const [user] = useAuthState(firebaseAuth);
-
   const [userData] = useDocument(firebaseDB.doc(`users/${user?.uid}`));
+  const {
+    open_change_post_notification_toggle_dialogue,
+    handleChangePostNotificationPrefDialogue,
+  } = useConfig();
 
   const changeNotifyPref = async () => {
     return firebaseDB.doc(`users/${user?.uid}`).update({
@@ -33,7 +35,10 @@ export default function SettingView() {
             </div>
           </aside>
           <aside>
-            <div onClick={() => setShowYesNo(true)} className="lable-action">
+            <div
+              onClick={() => handleChangePostNotificationPrefDialogue(true)}
+              className="lable-action"
+            >
               Change
             </div>
           </aside>
@@ -41,8 +46,8 @@ export default function SettingView() {
       </div>
 
       <KYesNoModal
-        open={showYesNo}
-        onClose={() => setShowYesNo(false)}
+        open={open_change_post_notification_toggle_dialogue}
+        onClose={() => handleChangePostNotificationPrefDialogue(false)}
         title="Are you sure?"
         content="You want to toggle notify preferences for posts"
         onYes={changeNotifyPref}

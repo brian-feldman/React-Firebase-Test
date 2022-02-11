@@ -13,8 +13,16 @@ export default function useConfig() {
       })
     );
 
+  const handleChangePostNotificationPrefDialogue = (val: boolean) =>
+    dispatch(
+      configSlice.actions.setState({
+        open_change_post_notification_toggle_dialogue: val,
+      })
+    );
+
   return {
     ...config,
     handleAddChannelModal,
+    handleChangePostNotificationPrefDialogue,
   };
 }
