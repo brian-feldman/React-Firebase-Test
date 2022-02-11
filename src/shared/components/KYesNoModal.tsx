@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { X } from "react-feather";
 import styled from "styled-components";
 import SButton from "./SButton";
 import SModal from "./SModal";
@@ -43,7 +44,9 @@ export default function KYesNoModal({
       <KYesNoModalWrapper>
         <header>
           <div className="modal-title">{title}</div>
-          <img onClick={onClose} src="/svg/close.svg" alt="" />
+          <span onClick={onClose}>
+            <X />
+          </span>
         </header>
 
         <div className="modal-content">{content}</div>
@@ -77,7 +80,8 @@ const KYesNoModalWrapper = styled.div`
       font-weight: 700;
     }
 
-    img {
+    img,
+    span {
       cursor: pointer;
     }
   }
